@@ -3,7 +3,7 @@
   tasks:
   - name: "instala pacote wget ubuntu"
     ansible.builtin.apt:
-      name: wget
+      name: wget, git, curl, cmatrix
       state: present
       update_cache: yes
     #when: (ansible_facts['distribution'] == "Ubuntu")
