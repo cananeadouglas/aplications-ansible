@@ -1,0 +1,9 @@
+- name: Instalação do Java
+  hosts: meu_pc
+  tasks:
+  - name: clone do respositório
+    git:
+      repo: 'https://github.com/cananeadouglas/pythonExercicios.git'
+      dest: $HOME
+      clone: yes
+      force: yes

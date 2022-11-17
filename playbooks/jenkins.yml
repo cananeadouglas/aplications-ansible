@@ -1,0 +1,40 @@
+- name: processo de preparação para instalação do Jenkins
+  hosts: all
+  #remote_user: root
+  tasks: 
+  - name: Adicionando a chave do repositório jenkins
+    ansible.builtin.apt_key:
+      url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+      state: present
+  - name: Adicionando o repositório do jenkins
+    ansible.builtin.apt_repository:
+      repo: deb https://pkg.jenkins.io/debian-stable binary/
+      state: present
+  - name: Instalação do Jenkins
+    ansible.builtin.apt:
+      name: jenkins
+      state: present
+      update_cache: yes
+  
+  - name: Obtendo a chave Inicial Admin pass do Jenkins
+    ansible.builtin.command: cat /var/lib/jenkins/secrets/initialAdminPassword
+    register: chave
+    ignore_errors: yes
+
+  - name: Exibindo a chave Initial Admin Password
+    ansible.builtin.debug: 
+      msg: "{{ chave.stdout }}"
+    when: chave.stdout != ""
+
+  - name: Adicionando o usuário jenkins no grupo docker
+    ansible.builtin.user:
+      name: jenkins
+      groups: docker
+      state: present
+      append: yes
+  
+  - name: restart Jenkins
+    ansible.builtin.service:
+      name: jenkins
+      state: restared
+

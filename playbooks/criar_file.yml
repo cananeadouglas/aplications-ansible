@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: yes
+
+  vars:
+    default_dir: /opt/custom
+
+  tasks:
+  - name: "cria diretório padrão nos servidores"
+    file:
+      path: "{{ default_dir }}"
+      state: directory
+
+  - name: "criar arquivo"
+    file:
+      path: "{{ default_dir }}/teste.py"
+      state: touch
+      owner: $USER
+      group: $USER
+      mode: 755
+      modification_time: preserve

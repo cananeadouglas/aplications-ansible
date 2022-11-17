@@ -1,0 +1,21 @@
+- name: Instalando o kubectl
+  hosts: all
+  tasks: 
+  - name: pre-requisitos
+    ansible.builtin.apt:
+      name: ca-certificates, curl, wget, vim, git, kubelet, kubeadm, kubectl
+      state: present
+      update_cache: yes
+  - name: adicionando a chave do repositório kubectl
+    ansible.builtin.apt_key:
+      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      state: present
+  - name: adicionando repositório
+    ansible.builtin.apt_repository:
+      repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+      state: present
+  - name: pre-requisitos
+    ansible.builtin.apt:
+      name: kubelet, kubeadm, kubectl
+      state: present
+      update_cache: yes

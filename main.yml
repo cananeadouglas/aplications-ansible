@@ -1,0 +1,22 @@
+# Main playbook to install everything
+
+#- name: Instalar kubernetes
+#  import_playbook: playbooks/kubectl.yml
+
+#- name: Instalar Jenkins
+#  import_playbook: playbooks/jenkins.yml
+
+#- name: atualizar
+#  import_playbook: playbooks/repo_git.yml
+
+#- name: criar pastas e arquivos
+#  import_playbook: playbooks/criar_file.yml
+
+- name: Install Docker
+  import_playbook: playbooks/docker_pip3.yaml
+
+#- name: Execute Test Playbook
+#  import_playbook: playbooks/java.yml
+
+#- name: atualizar
+#  import_playbook: playbooks/atualizar.yml

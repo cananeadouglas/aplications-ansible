@@ -1,0 +1,48 @@
+# Instalar galaxy ansible 
+# ansible-galaxy collection install community.docker
+---
+- name: Instalação do Docker
+  hosts: pc_remoto
+  become: yes
+  tasks: 
+  - name: Instalar os pré-requisitos.
+    ansible.builtin.apt:
+      name: ca-certificates, curl, gunzip, jq, bash-completion, sshpass, gnupg, libseccomp2, lsb-release, vim, git, python3-dev, docker-compose, apache2, wget, tree, apt-transport-https, software-properties-common, libffi-dev, libssl-dev
+      state: present
+      update_cache: yes
+
+  - name: Adicionando chaves do repositório APT docker
+    ansible.builtin.apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: Adicionando o repositório para instalar o Docker
+    ansible.builtin.apt_repository:
+      repo: deb https://download.docker.com/linux/ubuntu bionic stable
+      state: present
+
+  - name: Instalando o Docker.
+    ansible.builtin.apt:
+      name: docker-ce, docker-ce-cli, containerd.io, docker-compose-plugin
+      state: present
+      update_cache: yes
+
+- name: Instalar as dependencias para execução do modulo docker
+  hosts: pc_remoto
+  tasks: 
+  - name: Instalação do PIP
+    apt: 
+      name: python3-pip, python3
+      state: latest
+  - name: Instalando pacote docker do python
+    pip: 
+      name: docker
+
+- name: Executar o container da aplicação
+  hosts: all
+  remote_user: ubuntu
+  tasks: 
+  - name: comando pra executar a criação
+    ansible.builtin.command: docker run hello-world
+
+
